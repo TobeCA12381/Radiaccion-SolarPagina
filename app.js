@@ -2,7 +2,7 @@ const express = require("express");
 const path = require('path');
 const mysql = require('mysql');
 const moment = require('moment');
-const config = require('./config');
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, PORT } = require('./config');
 const app = express();
 
 // Configuración para el motor de plantillas EJS
@@ -13,10 +13,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Configuración de la conexión a la base de datos MySQL
 const connection = mysql.createConnection({
-    host: config.db.host,
-    user: config.db.user,
-    password: config.db.password,
-    database: config.db.database
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_NAME,
+    port: DB_PORT
 });
 
 // Conectar a la base de datos MySQL
@@ -52,8 +53,7 @@ app.get("/", (req, res) => {
 });
 
 // Iniciar el servidor
-const PORT = process.env.PORT || 8093;
-app.listen(PORT,"0.0.0.0", () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
 
